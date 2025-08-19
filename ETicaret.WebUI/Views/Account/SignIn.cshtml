@@ -1,5 +1,44 @@
 ﻿@{
-     ViewData["Title"] = "Giriş";
-
-     <h1>Giriş</h1>
+    ViewData["Title"] = "Giriş";
 }
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg p-4 rounded-4" style="max-width: 400px; width: 100%;">
+        <div class="text-center mb-4">
+            <img src="/Img/Product/lenovo_loq.jpeg" 
+                 alt="Bootstrap Logo" width="72" height="57">
+            <h3 class="mt-2">Giriş Yap</h3>
+            <p class="text-muted">Lütfen giriş yapınız</p>
+        </div>
+
+        <form>
+            
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="iski@gmail.com">
+                <label for="floatingInput">Email</label>
+            </div>
+
+           
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Şifre">
+                <label for="floatingPassword">Şifre</label>
+            </div>
+
+           @*  <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" value="remember-me" id="checkDefault">
+                <label class="form-check-label" for="checkDefault">
+                    Beni hatırla
+                </label>
+            </div> *@
+
+            
+            <button class="btn btn-primary w-100 py-2 rounded-3" type="submit">Giriş Yap</button>
+        </form>
+
+        <hr class="my-4">
+
+        <div class="text-center">
+            <p class="mb-0">Hesabınız yok mu? <a href="/Account/SignUp">Kayıt Ol</a></p>
+        </div>
+    </div>
+</div>
