@@ -1,0 +1,53 @@
+﻿@model ETicaret.Core.Entities.Brand
+
+@{
+    ViewData["Title"] = "Marka Detayları";
+}
+<div class="card p-4 mb-4 shadow-sm"> 
+    <h4>Kullanıcı Bilgileri</h4> 
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3 text-muted"> 
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Logo)
+        </dt>
+        <dd class = "col-sm-9">
+            <img src="/Img/Brand/@Model.Logo" alt="" height="75"/>
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.OrderNo)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.OrderNo)
+        </dd>
+    </dl>
+</div>
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning me-2"> 
+        <i class="fas fa-edit"></i> Düzenle
+    </a>
+    <a asp-action="Index" class="btn btn-secondary"> 
+        <i class="fas fa-arrow-left"></i> Listeye Geri Dön
+    </a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,80 @@
+﻿@model ETicaret.Core.Entities.AppUser
+
+@{
+    ViewData["Title"] = "Silme Onayı";
+}
+<h3 class="text-danger mb-4">Bu kullanıcıyı silmek istediğinizden emin misiniz?</h3>
+
+<div class="card p-4 mb-4 shadow-sm"> 
+    <div class="row">
+        <dt class="col-sm-3 text-muted"> 
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt class="col-sm-3 text-muted">
+            @Html.DisplayNameFor(model => model.Surname)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Surname)
+        </dd>
+
+        <dt class="col-sm-3 text-muted">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt class="col-sm-3 text-muted">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt class="col-sm-3 text-muted">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt class="col-sm-3 text-muted">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt class="col-sm-3 text-muted">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt class="col-sm-3 text-muted">
+            @Html.DisplayNameFor(model => model.IsAdmin)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IsAdmin)
+        </dd>
+    </div>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger me-2"> @* Buton olarak değiştirildi ve simge eklendi *@
+        <i class="fas fa-trash-alt"></i> Sil
+    </button>
+    <a asp-action="Index" class="btn btn-secondary"> @* Simge eklendi *@
+        <i class="fas fa-arrow-left"></i> Listeye Geri Dön
+    </a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

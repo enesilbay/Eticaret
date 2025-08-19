@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ETicaret.Core.Entities.Category>
+
+@{
+    ViewData["Title"] = "Kategori Yönetimi";
+}
+<p>
+   <a asp-action="Create" class="btn btn-primary">
+        <i class="fas fa-user-plus"></i> Yeni Kategori Ekle
+    </a>
+</p>
+<div class="table-responsive"> 
+     <table class="table table-striped table-hover table-bordered"> 
+<thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsTopMenu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderNo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+               @item.CreateDate.ToShortDateString()
+            </td>
+            <td>
+                <img src="/Img/Categories/@item.Image" alt ="" height="30" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsTopMenu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderNo)
+            </td>
+           <td class="text-center text-nowrap"> 
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm me-1" title="Düzenle">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm me-1" title="Detaylar">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" title="Sil">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+                        @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
