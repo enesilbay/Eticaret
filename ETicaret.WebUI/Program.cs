@@ -1,5 +1,7 @@
 using ETicaret.Data;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 
 
@@ -19,6 +21,24 @@ namespace ETicaret.WebUI
 
             builder.Services.AddDbContext<DataBaseContext>();
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(x => 
+                {
+                    x.LoginPath = "/Account/SignIn";
+                    x.AccessDeniedPath = "/AccessDenied";
+                    x.Cookie.Name = "Account";
+                    x.Cookie.MaxAge=TimeSpan.FromDays(7);
+                    x.Cookie.IsEssential = true;
+                }
+                );
+
+            builder.Services.AddAuthorization(x =>
+            {
+                x.AddPolicy("AdminPolicy",policy=>policy.RequireClaim(ClaimTypes.Role,"Admin"));
+                x.AddPolicy("UserPolicy",policy=>policy.RequireClaim(ClaimTypes.Role,"Admin","User","Customer"));
+
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -32,7 +52,8 @@ namespace ETicaret.WebUI
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();//önce oturum açma
+            app.UseAuthorization();//sonra yetkilendirme
 
             app.MapStaticAssets();
 

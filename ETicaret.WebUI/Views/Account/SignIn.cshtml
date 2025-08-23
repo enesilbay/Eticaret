@@ -1,44 +1,49 @@
-﻿@{
+﻿@model LoginViewModel
+
+@{
     ViewData["Title"] = "Giriş";
 }
 
-<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
-    <div class="card shadow-lg p-4 rounded-4" style="max-width: 400px; width: 100%;">
-        <div class="text-center mb-4">
-            <img src="/Img/Product/lenovo_loq.jpeg" 
-                 alt="Bootstrap Logo" width="72" height="57">
-            <h3 class="mt-2">Giriş Yap</h3>
-            <p class="text-muted">Lütfen giriş yapınız</p>
+<style>
+    html,
+    body {height: 100%;}
+
+    .form-signin {max-width: 330px; padding: 1rem;}
+
+    .form-signin .form-floating:focus-within {z-index:2;}
+
+    .form-signin input[type="email"] {margin-bottom: -1px; border-bottom-right-radius: 0; border-bottom-left-radius:0;}
+
+    .form-signin input[type="password"] {margin-bottom: 10px; border-bottom-right-radius: 0; border-bottom-left-radius:0;}
+</style>
+
+<main class="form-signin w-100 m-auto shadow rounded my-5">
+
+
+    <form asp-action="SignIn">
+        <h1 class="h3 mb-3 fw-normal">Üye Girişi</h1>
+        <div asp asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-floating">
+            <input asp-for="Email" class="form-control" id="floatingInput" placeholder="name@example.com" />
+        <label for="floatingInput">Email</label>
+        <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
-        <form>
-            
-            <div class="form-floating mb-3">
-                <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="iski@gmail.com">
-                <label for="floatingInput">Email</label>
-            </div>
 
-           
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Şifre">
-                <label for="floatingPassword">Şifre</label>
-            </div>
-
-           @*  <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" value="remember-me" id="checkDefault">
-                <label class="form-check-label" for="checkDefault">
-                    Beni hatırla
-                </label>
-            </div> *@
-
-            
-            <button class="btn btn-primary w-100 py-2 rounded-3" type="submit">Giriş Yap</button>
-        </form>
-
-        <hr class="my-4">
-
-        <div class="text-center">
-            <p class="mb-0">Hesabınız yok mu? <a href="/Account/SignUp">Kayıt Ol</a></p>
+        <div class="form-floating">
+            <input asp-for="Password" class="form-control" id="floatingPassword" placeholder="Password" />
+        <label for="floatingInput">Şifre</label>
+        <span asp-validation-for="Password" class="text-danger"></span>
         </div>
-    </div>
-</div>
+
+
+        <div class="form-check text-start my-3">
+            <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="flexCheckDefault" />
+        <label class="form-check-label" for="flexCheckDefault">
+            Beni Hatırla
+            </label>
+        </div>
+        <input type="hidden" asp-for="ReturnUrl" value="@Context.Request.Query["ReturnUrl"]" />
+        <button class="btn btn-primary w-100 py-2" type="submit">Giriş</button>
+    </form>
+</main>
