@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ETicarett.Areas.Admin.Controllers
 {
-    [Area("Admin"), Authorize]
+    [Area("Admin"), Authorize(Policy = "AdminPolicy")]
     public class ContactsController : Controller
     {
         private readonly DataBaseContext _context;

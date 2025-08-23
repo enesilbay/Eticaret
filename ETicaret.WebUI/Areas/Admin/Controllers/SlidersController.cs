@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ETicaret.WebUI.Areas.Admin.Controllers
 {
-    [Area("Admin"), Authorize]
+    [Area("Admin"), Authorize(Policy = "AdminPolicy")]
     public class SlidersController : Controller
     {
         private readonly DataBaseContext _context;
