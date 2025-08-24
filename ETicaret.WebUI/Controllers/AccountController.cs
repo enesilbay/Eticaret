@@ -12,14 +12,16 @@ namespace ETicaret.WebUI.Controllers
 {
     public class AccountController : Controller
     {
+        
         private readonly DataBaseContext _context;
 
+        //Dependency Injection
         public AccountController(DataBaseContext context)
         {
             _context = context;
         }
 
-        [Authorize]
+        [Authorize]//Bu sayfayı sadece giriş yapmış kullanıcılar görebilir!" anlamına gelir.
         public IActionResult Index()
         {
             return View();
@@ -57,6 +59,9 @@ namespace ETicaret.WebUI.Controllers
                         ClaimsPrincipal userPrincipal = new ClaimsPrincipal(userIdentity);
                         await HttpContext.SignInAsync(userPrincipal);
                         return Redirect(string.IsNullOrEmpty(loginViewModel.ReturnUrl)? "/": loginViewModel.ReturnUrl);
+                        //Eğer kullanıcı korumalı bir sayfaya gitmeye çalışıp giriş sayfasına yönlendirildiyse,
+                        //ReturnUrl dolu olur ve giriş yaptıktan sonra gitmek istediği o sayfaya geri döner.
+                        //Eğer doğrudan giriş sayfasına geldiyse, anasayfaya (/) yönlendirilir.
                     }
 
                 }

@@ -18,7 +18,9 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Categories
+        // GET istekleri sadece veri alır, sistemde bir değişiklik yapmaz.
+        //Tarayıcının adres çubuğuna bir URL yazdığınızda her zaman bir GET isteği gönderilir.
+        // Bu Index metodu çalışır,veritabanındaki tüm kategorileri gösterir
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());
@@ -44,6 +46,7 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
 
 
         // GET: Admin/Categories/Create
+       
         public IActionResult Create()
         {
             ViewBag.Kategoriler = new SelectList(_context.Categories, "Id", "Name");
@@ -51,6 +54,7 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
         }
 
         // POST: Admin/Categories/Create 
+        //POST istekleri, sunucuya veri göndererek sistemde bir değişiklik yapar
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category, IFormFile? Image)

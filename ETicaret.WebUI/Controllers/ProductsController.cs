@@ -7,9 +7,12 @@ namespace ETicaret.WebUI.Controllers
 {
     public class ProductsController : Controller
     {
+        //_context değişkenini kendimiz oluşturmuyoruz, DI konteyneri bize veriyor.
         private readonly DataBaseContext _context;
 
-        public ProductsController(DataBaseContext context)
+        // Controller oluşturulurken, servis olarak kaydettiğimiz
+        // DataBaseContext otomatik olarak buraya "enjekte edilir".
+       public ProductsController(DataBaseContext context)
         {
             _context = context;
         }
@@ -17,6 +20,7 @@ namespace ETicaret.WebUI.Controllers
         {
             var dataBaseContext = _context.Products.Where(p=>p.IsActive && p.Name.Contains(q) || p.Description.Contains(q)   ).Include(p => p.Brand).Include(p => p.Category);
             return View(await dataBaseContext.ToListAsync());
+// await kelimesi, bu işlem bitene kadar sunucunun başka işler yapabilmesini sağlar (asenkron çalışma).
         }
         public async Task<IActionResult> Details(int? id)
         {
@@ -26,6 +30,7 @@ namespace ETicaret.WebUI.Controllers
             }
 
             var product = await _context.Products
+                //Eager Loading
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
