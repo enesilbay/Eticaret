@@ -24,7 +24,22 @@ namespace ETicaret.WebUI.Controllers
         [Authorize]//Bu sayfayı sadece giriş yapmış kullanıcılar görebilir!" anlamına gelir.
         public IActionResult Index()
         {
-            return View();
+            //FirstOrDefault, sorguya uyan ilk öğeyi döndüren bir metodur.
+            AppUser user =_context.AppUsers.FirstOrDefault(x=>x.UserGuid.ToString()==HttpContext.User.FindFirst("UserGuid").Value);
+            if (user is null)
+            {
+                return NotFound();
+            }
+            var model = new UserEditViewModel()
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Name = user.Name,
+                Password = user.Password,
+                Phone=user.Phone,
+                Surname = user.Surname,
+            };
+            return View(model);
         }
         public IActionResult SignIn()//giriş
         {
