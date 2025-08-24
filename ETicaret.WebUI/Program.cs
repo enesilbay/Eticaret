@@ -2,6 +2,7 @@ using ETicaret.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using Microsoft.Extensions.Options;
 
 
 
@@ -20,7 +21,14 @@ namespace ETicaret.WebUI
             builder.Services.AddControllersWithViews();//Controller ve View'larýn çalýþmasý
                                                        //için gereken tüm temel servisleri kaydeder.
 
-            builder.Services.AddSession();
+            builder.Services.AddSession(Options =>
+            {
+                Options.Cookie.Name = ".ETicaret.Session";
+                Options.Cookie.HttpOnly = true;
+                Options.Cookie.IsEssential = true;
+                Options.IdleTimeout = TimeSpan.FromDays(1);
+                Options.IOTimeout = TimeSpan.FromMinutes(10);
+            });
 
 
             //"Dependency Injection Design Pattern
