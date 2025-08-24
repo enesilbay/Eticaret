@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ETicaret.Core\ETicaret.Core.csproj" />
+    <ProjectReference Include="..\ETicaret.Data\ETicaret.Data.csproj" />
   </ItemGroup>
 
 </Project>
