@@ -1,5 +1,6 @@
 ﻿using ETicaret.Core.Entities;
 using ETicaret.Data;
+using ETicaret.Service.Abstract;
 using ETicaret.WebUI.Models;
 using Microsoft.AspNetCore.Authentication;//login
 using Microsoft.AspNetCore.Authorization;//login
@@ -13,19 +14,26 @@ namespace ETicaret.WebUI.Controllers
     public class AccountController : Controller
     {
         
-        private readonly DataBaseContext _context;
+        //private readonly DataBaseContext _context;
 
-        //Dependency Injection
-        public AccountController(DataBaseContext context)
+        ////Dependency Injection
+        //public AccountController(DataBaseContext context)
+        //{
+        //    _context = context;
+        //}
+
+        private readonly IService<AppUser> _service;
+
+        public AccountController(IService<AppUser> service)
         {
-            _context = context;
+            _service = service;
         }
 
         [Authorize]//Bu sayfayı sadece giriş yapmış kullanıcılar görebilir!" anlamına gelir.
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //FirstOrDefault, sorguya uyan ilk öğeyi döndüren bir metodur.
-            AppUser user =_context.AppUsers.FirstOrDefault(x=>x.UserGuid.ToString()==HttpContext.User.FindFirst("UserGuid").Value);
+            AppUser user = await _service.GetAsync(x=>x.UserGuid.ToString()==HttpContext.User.FindFirst("UserGuid").Value);
             if (user is null)
             {
                 return NotFound();
@@ -43,13 +51,13 @@ namespace ETicaret.WebUI.Controllers
         }
 
         [HttpPost,Authorize]
-        public IActionResult Index(UserEditViewModel model)
+        public async Task<IActionResult> IndexAsync(UserEditViewModel model)
         {
             if (ModelState.IsValid) 
             {
                 try
                 {
-                    AppUser user = _context.AppUsers.FirstOrDefault(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
+                    AppUser user = await _service.GetAsync(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
                     if (user is not null) 
                     {
                         user.Surname = model.Surname;
@@ -57,8 +65,8 @@ namespace ETicaret.WebUI.Controllers
                         user.Name = model.Name;
                         user.Password = model.Password;
                         user.Email = model.Email;
-                        _context.AppUsers.Update(user);
-                        var sonuc=_context.SaveChanges();
+                        _service.Update(user);
+                        var sonuc=_service.SaveChanges();
 
                         if (sonuc > 0)
                         {
@@ -95,7 +103,7 @@ namespace ETicaret.WebUI.Controllers
             {
                 try
                 {
-                    var account =await _context.AppUsers.FirstOrDefaultAsync(x=>x.Email == loginViewModel.Email
+                    var account =await _service.GetAsync(x=>x.Email == loginViewModel.Email
                     && x.Password==loginViewModel.Password && x.IsActive);
                     if (account == null)
                     {
@@ -140,8 +148,8 @@ namespace ETicaret.WebUI.Controllers
             appUser.IsActive = true;
             if (ModelState.IsValid)
             {
-                await _context.AddAsync(appUser);
-                await _context.SaveChangesAsync();
+                await _service.AddAsync(appUser);
+                await _service.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(appUser);

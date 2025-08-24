@@ -13,7 +13,7 @@ namespace ETicaret.Service.Abstract
         void Add(T entity);
         void Delete(T entity);
         void Update(T entity);
-        int SavaChanges();
+        int SaveChanges();
 
         //Asenkron metotlar
         Task<T> FindAsync(int id);
@@ -21,7 +21,7 @@ namespace ETicaret.Service.Abstract
         Task<List<T>> GetAllAsync();
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>> expression);
         Task AddAsync(T entity);
-        Task<int> SavaChangesAsync();
+        Task<int> SaveChangesAsync();
 
 
 

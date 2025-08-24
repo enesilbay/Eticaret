@@ -77,12 +77,12 @@ namespace ETicaret.Service.Concrete
             return _dbSet;
         }
 
-        public int SavaChanges()
+        public int SaveChanges()
         {
             return _context.SaveChanges();
         }
 
-        public async Task<int> SavaChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
         }

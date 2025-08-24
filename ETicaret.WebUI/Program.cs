@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.Extensions.Options;
+using ETicaret.Service.Abstract;
+using ETicaret.Service.Concrete;
 
 
 
@@ -33,6 +35,10 @@ namespace ETicaret.WebUI
 
             //"Dependency Injection Design Pattern
             builder.Services.AddDbContext<DataBaseContext>();
+
+            builder.Services.AddScoped(typeof(IService<>),typeof(Service<>));
+            //Bu kod satýrý, IService<T> arayüzünü Service<T> sýnýfýna baðlar.
+            //Yani, uygulama her IService<T> talep ettiðinde, ona uygun Service<T> örneði verilecektir.
 
 
 
