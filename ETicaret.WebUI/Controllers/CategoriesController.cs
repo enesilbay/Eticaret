@@ -1,18 +1,17 @@
 ﻿using ETicaret.Core.Entities;
-using ETicaret.Data;
+using ETicaret.Service.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ETicaret.WebUI.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly DataBaseContext _context;
+        private readonly IService<Category> _service;
 
-        public CategoriesController(DataBaseContext context)
+        public CategoriesController(IService<Category> service)
         {
-            _context = context;
+            _service = service;
         }
         public async Task<IActionResult> IndexAsync(int? id)
         {
@@ -21,7 +20,7 @@ namespace ETicaret.WebUI.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.Include(p=>p.Products)
+            var category = await _service.GetQueryable().Include(p=>p.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {

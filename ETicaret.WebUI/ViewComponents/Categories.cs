@@ -1,20 +1,20 @@
-﻿using ETicaret.Data;
+﻿using ETicaret.Core.Entities;
+using ETicaret.Service.Abstract;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ETicaret.WebUI.ViewComponents
 {
     public class Categories : ViewComponent
     {
-        private readonly DataBaseContext _context;
+        private readonly IService<Category> _service;
 
-        public Categories(DataBaseContext context)
+        public Categories(IService<Category> service)
         {
-            _context = context;
+            _service = service;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _service.GetAllAsync(c => c.IsTopMenu && c.IsActive));
         }
     }
 }

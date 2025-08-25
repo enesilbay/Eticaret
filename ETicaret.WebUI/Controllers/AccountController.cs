@@ -1,13 +1,10 @@
 ﻿using ETicaret.Core.Entities;
-using ETicaret.Data;
 using ETicaret.Service.Abstract;
 using ETicaret.WebUI.Models;
 using Microsoft.AspNetCore.Authentication;//login
 using Microsoft.AspNetCore.Authorization;//login
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;//login
-using System.Threading.Tasks;
 
 namespace ETicaret.WebUI.Controllers
 {
