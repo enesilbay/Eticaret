@@ -35,6 +35,7 @@ namespace ETicaret.WebUI.Controllers
                 var cart = GetCart();
                 cart.AddProduct(product,quantity);
                 HttpContext.Session.SetJson("Cart",cart);
+                return Redirect(Request.Headers["referer"].ToString());
             }
 
 
