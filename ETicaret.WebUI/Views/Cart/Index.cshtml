@@ -43,8 +43,8 @@
 										@((item.Quantity * item.Product.Price).ToString("c"))
 									</td>
 									<td>
-										 <form asp-action="Remove"  asp-controller="Favorites"> 
-											<input type="hidden" name="ProductId" value="@item.Id" />
+										 <form asp-action="Remove"  asp-controller="Cart"> 
+											<input type="hidden" name="ProductId" value="@item.Product.Id" />
 											 <button class="btn btn-sm btn-danger" type="submit">
 												<i class="bi-x-lg"> </i>
 											 </button>

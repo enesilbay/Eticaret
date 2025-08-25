@@ -21,14 +21,22 @@
                             @Model.Product.Description
                         </p>
                         <div class="d-flex">
-                            <form asp-action="Add" asp-controller="Cart">
+                            <form asp-action="Add" asp-controller="Cart" class="d-flex">
                                 <input type="hidden" name="ProductId" value="@Model.Product.Id" />
-                            <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 5rem">
+                            <input class="form-control text-center me-3" name="quantity" id="inputQuantity" type="number" value="1" style="max-width: 5rem">
                             <button class="btn btn-outline-dark flex-shrink-0" type="submit">
-                                <i class="bi-cart-fill me-1"></i>
+                                <i class="bi-cart  me-1"></i>
                                 Sepete Ekle
                             </button>
-                            </form>
+                            </form> 
+                            <form asp-action="Add" asp-controller="Favorites" class="d-flex ms-3">
+                                <input type="hidden" name="ProductId" value="@Model.Product.Id" />
+                           @*<input class="form-control text-center me-3" name="quantity" id="inputQuantity" type="number" value="1" style="max-width: 5rem">*@ 
+                            <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                                <i class="bi-heart me-1"></i>
+                                Favorilere Ekle
+                            </button>
+                            </form> 
                         </div>
                     </div>
                 </div>
