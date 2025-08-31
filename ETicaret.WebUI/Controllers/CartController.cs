@@ -74,7 +74,16 @@ namespace ETicaret.WebUI.Controllers
 
             return RedirectToAction("Index");
         }
-
+        public IActionResult CheckOut() 
+        {
+            var cart = GetCart();
+            var model = new CheckOutViewModel()
+            {
+                CartProducts = cart.CartLines,
+                TotalPrice = cart.TotalPrice()
+            };
+            return View(model);
+        }
 
 
 

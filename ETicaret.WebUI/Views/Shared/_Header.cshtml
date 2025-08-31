@@ -59,14 +59,14 @@
 @* Sepet *@
 @{
     var cart = Context.Session.GetJson<ETicaret.Service.Concrete.CartService>("Cart");
-    int totalItems = cart?.CartLines.Sum(c => c.Quantity) ?? 0; // Sepetteki toplam ürün sayısı
+    int totalItems = cart?.CartLines.Sum(c => c.Quantity) ?? 0; 
 }
 
 @if (cart != null && cart.CartLines.Count > 0)
 {
     <a class="dropdown-toggle nav-link text-dark position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         Sepetim
-        @* Ürün adedi badge *@
+        
         @if(totalItems > 0)
         {
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
