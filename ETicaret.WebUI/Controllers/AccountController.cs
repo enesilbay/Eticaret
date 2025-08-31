@@ -108,9 +108,11 @@ namespace ETicaret.WebUI.Controllers
                     }
                     else 
                     {
-                        var claims=new List<Claim>()
+
+                        //kimlik Doğrulama (Authentication)
+                        var claims =new List<Claim>()
                         {
-                            new(ClaimTypes.Name,account.Name),
+                            new(ClaimTypes.Name,account.Name),//Bu kişinin adı, veritabanından gelen account.Name değeridir."
                             new(ClaimTypes.Role,account.IsAdmin ? "Admin" : "Customer"),
                             new(ClaimTypes.Email,account.Email),
                             new("UserId",account.Id.ToString()),

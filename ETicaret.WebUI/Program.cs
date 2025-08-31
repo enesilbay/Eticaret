@@ -43,7 +43,7 @@ namespace ETicaret.WebUI
 
 
             //uygulamanýn kimlik doðrulama sistemini kurar.
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)//HttpContext.SignInAsync çaðrýldýðýnda bir cookie oluþturulacaðýný belirtir.
                 .AddCookie(x => 
                 {
                     x.LoginPath = "/Account/SignIn";//Eðer kullanýcý giriþ yapmamýþsa ama giriþ gerektiren bir sayfaya gitmeye çalýþýrsa, otomatik olarak bu adrese yönlendirilir.

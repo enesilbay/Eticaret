@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace ETicaret.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Policy ="AdminPolicy")]
+    [Authorize(Policy ="AdminPolicy")] //[Authorize(Roles = "Admin")] // Rolü "Admin" olanlar girebilir.
     public class AppUsersController : Controller
     {
         private readonly DataBaseContext _context;

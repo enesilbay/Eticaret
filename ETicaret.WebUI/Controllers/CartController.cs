@@ -52,7 +52,7 @@ namespace ETicaret.WebUI.Controllers
             {
                 var cart = GetCart();
                 cart.UpdateProduct(product,quantity);
-                HttpContext.Session.SetJson("Cart",cart);
+                HttpContext.Session.SetJson("Cart",cart); //güncellenen sepet verisini JSON formatında session'a kaydeder. Bu, oturum sona erene kadar kullanıcının sepetinin kaybolmamasını sağlar.
             }
 
 

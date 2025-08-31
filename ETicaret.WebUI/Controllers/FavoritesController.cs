@@ -35,6 +35,7 @@ namespace ETicaret.WebUI.Controllers
             {
                 favoriler.Add(product);
                 HttpContext.Session.SetJson("GetFavorites",favoriler);
+                return Redirect(Request.Headers["referer"].ToString());
             }
             return RedirectToAction("Index");
         }

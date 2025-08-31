@@ -16,9 +16,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark"  asp-controller="Home" asp-action="Index">Anasayfa</a>
                         </li>
-                        @await Component.InvokeAsync("Categories")
+                        @await Component.InvokeAsync("Categories") @* Bu satırın olduğu yere, ViewComponent'in ürettiği kategori linkleri (HTML) yerleştirilir*@
                     </ul>
-                    @if (Context.User.Identity.IsAuthenticated)
+
+
+                    @if (Context.User.Identity.IsAuthenticated)@*kullanıcının siteye giriş yapıp yapmadığını kontrol eder.*@
                 {
                     <div class="dropdown">
                          <a class="dropdown-toggle nav-link text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -52,32 +54,55 @@
                           </a>
                      </div>
                      <div class="dropdown">
-                @{
-                    var cart = Context.Session.GetJson<ETicaret.Service.Concrete.CartService>("Cart");
-                    if (cart!=null && cart.CartLines.Count>0)
-                    {
-                        <a class="dropdown-toggle nav-link text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Sepetim
-                          </a>
-                          <ul class="dropdown-menu">
-                          @foreach (var item in cart.CartLines)
-                                {
-                                    <li><a class="dropdown-item text-wrap" href="/Products/Details/@item.Product.Id">
-                                    <img src="/Img/Product/@item.Product.Image" alt="" height="40" />
-                                    @item.Product.Name 
-                                    </a>
-                                    </li>
-                                } 
-                                <li class="text-center"><a class="btn btn-warning m-auto" href="/Cart">Sepete Git</a></li>
-                         </ul>
-                    }
-                    else
-                        {
-                           <a class="nav-link text-dark" href="/Cart">
-                          Sepetim
-                          </a>
-                        }
-                     }
+
+
+@* Sepet *@
+@{
+    var cart = Context.Session.GetJson<ETicaret.Service.Concrete.CartService>("Cart");
+    int totalItems = cart?.CartLines.Sum(c => c.Quantity) ?? 0; // Sepetteki toplam ürün sayısı
+}
+
+@if (cart != null && cart.CartLines.Count > 0)
+{
+    <a class="dropdown-toggle nav-link text-dark position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Sepetim
+        @* Ürün adedi badge *@
+        @if(totalItems > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @totalItems
+            </span>
+        }
+    </a>
+    <ul class="dropdown-menu">
+        @foreach (var item in cart.CartLines)
+        {
+            <li>
+                <a class="dropdown-item text-wrap" href="/Products/Details/@item.Product.Id">
+                    <img src="/Img/Product/@item.Product.Image" alt="" height="40" />
+                    @item.Product.Name
+                </a>
+            </li>
+        }
+        <li class="text-center">
+            <a class="btn btn-warning m-auto" href="/Cart">Sepete Git</a>
+        </li>
+    </ul>
+}
+else
+{
+    <a class="nav-link text-dark position-relative" href="/Cart">
+        Sepetim
+        @if(totalItems > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @totalItems
+            </span>
+        }
+    </a>
+}
+
+
                      </div>
                      <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ContactUs">İletişim</a>
                 </div>

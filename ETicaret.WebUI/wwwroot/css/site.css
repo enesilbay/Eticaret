@@ -27,3 +27,17 @@ html {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.footer-title {
+    font-size: 13px; 
+    margin-bottom: 4px;
+}
+
+.footer-text {
+    line-height: 1.4; 
+}
+
+footer {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
