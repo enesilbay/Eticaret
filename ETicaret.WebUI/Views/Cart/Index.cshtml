@@ -37,9 +37,30 @@
 									<td>
 										@item.Product.Price.ToString("c")
 									</td>
-									<td>	
-										@item.Quantity
+									<td>
+
+										@* miktar*@
+										<div class="d-flex align-items-center">
+											<!-- Azalt Butonu -->
+											<form asp-action="Update" asp-controller="Cart" method="post" class="me-1">
+												<input type="hidden" name="ProductId" value="@item.Product.Id" />
+												<input type="hidden" name="quantity" value="-1" />
+												<button class="btn btn-sm btn-outline-secondary" type="submit">-</button>
+											</form>
+
+											<!-- Miktar Gösterimi -->
+											<span class="mx-2">@item.Quantity</span>
+
+											<!-- Arttır Butonu -->
+											<form asp-action="Update" asp-controller="Cart" method="post" class="ms-1">
+												<input type="hidden" name="ProductId" value="@item.Product.Id" />
+												<input type="hidden" name="quantity" value="1" />
+												<button class="btn btn-sm btn-outline-secondary" type="submit">+</button>
+											</form>
+										</div>
 									</td>
+
+									<!-- fiyat  -->
 									<td>	
 										@((item.Quantity * item.Product.Price).ToString("c"))
 									</td>

@@ -50,8 +50,14 @@ namespace ETicaret.Service.Concrete
             if (urun != null)
             {
                 urun.Quantity += quantity;
+
+                // Eğer miktar 0 veya altına düşerse ürünü kaldır
+                if (urun.Quantity <= 0)
+                {
+                    CartLines.Remove(urun);
+                }
             }
-            else
+            else if (quantity > 0)
             {
                 CartLines.Add(new CartLine
                 {
@@ -59,7 +65,7 @@ namespace ETicaret.Service.Concrete
                     Quantity = quantity
                 });
             }
-
         }
+
     }
 }
