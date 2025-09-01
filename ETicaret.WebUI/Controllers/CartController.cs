@@ -3,6 +3,7 @@ using ETicaret.Service.Abstract;
 using ETicaret.Service.Concrete;
 using ETicaret.WebUI.ExtensionMethods;
 using ETicaret.WebUI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETicaret.WebUI.Controllers
@@ -26,21 +27,24 @@ namespace ETicaret.WebUI.Controllers
             return View(model);
         }
 
-        public IActionResult Add(int ProductId,int quantity=1)
+        public IActionResult Add(int ProductId, int quantity = 1)
         {
             var product = _service.Find(ProductId);
 
             if (product != null)
             {
                 var cart = GetCart();
-                cart.AddProduct(product,quantity);
-                HttpContext.Session.SetJson("Cart",cart);
+                cart.AddProduct(product, quantity);
+                HttpContext.Session.SetJson("Cart", cart);
+                TempData["Message"] = @"<div class=""alert alert-success alert-dismissible fade show"" role=""alert"">
+                                  <strong>Ürün sepetinize eklenmiştir!</strong>
+                                  <button type=""button"" class=""btn-close"" data-bs-dismiss=""alert"" aria-label=""Close""></button>
+                               </div>";    
                 return Redirect(Request.Headers["referer"].ToString());
             }
-
-
             return RedirectToAction("Index");
         }
+
 
 
 
@@ -74,6 +78,7 @@ namespace ETicaret.WebUI.Controllers
 
             return RedirectToAction("Index");
         }
+        [Authorize]
         public IActionResult CheckOut() 
         {
             var cart = GetCart();

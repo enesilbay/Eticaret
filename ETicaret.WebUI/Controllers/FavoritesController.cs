@@ -31,14 +31,22 @@ namespace ETicaret.WebUI.Controllers
         {
             var favoriler = GetFavorites();
             var product = _service.Find(ProductId);
-            if (product != null && !favoriler.Any(p=>p.Id == ProductId)) // favoriler de bu ID ye eşit bir ürün içermiyorsa
+
+            if (product != null && !favoriler.Any(p => p.Id == ProductId))
             {
                 favoriler.Add(product);
-                HttpContext.Session.SetJson("GetFavorites",favoriler);
-                return Redirect(Request.Headers["referer"].ToString());
+                HttpContext.Session.SetJson("GetFavorites", favoriler);
+
+                TempData["Message"] = @"<div class=""alert alert-success alert-dismissible fade show"" role=""alert"">
+                                  <strong>Ürün Favorilerinize Eklenmiştir!</strong>
+                                  <button type=""button"" class=""btn-close"" data-bs-dismiss=""alert"" aria-label=""Close""></button>
+                               </div>";
             }
-            return RedirectToAction("Index");
+
+            // Her durumda ürünün bulunduğu sayfaya geri dön
+            return Redirect(Request.Headers["referer"].ToString());
         }
+
 
         public IActionResult Remove(int ProductId)
         {

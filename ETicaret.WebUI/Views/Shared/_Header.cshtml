@@ -27,6 +27,7 @@
                           Hesabım
                           </a>
                           <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="/Favorites">Favorilerim</a></li>
                               <li><a class="dropdown-item" href="/Account">Kullanıcı Bilgilerim</a></li>
                               <li><a class="dropdown-item" href="/Account">Siparişlerim</a></li>
                               <li><a class="dropdown-item" href="/Account">Değerlendirmelerim</a></li>
@@ -48,12 +49,12 @@
                          </ul>
                      </div>
                 }
-                 <div class="dropdown">
+             @*    <div class="dropdown">
                          <a class="nav-link text-dark" href="/Favorites">
                           Favorilerim
                           </a>
                      </div>
-                     <div class="dropdown">
+                     <div class="dropdown"> *@
 
 
 @* Sepet *@
@@ -64,6 +65,7 @@
 
 @if (cart != null && cart.CartLines.Count > 0)
 {
+    <div class="dropdown"> 
     <a class="dropdown-toggle nav-link text-dark position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         Sepetim
         
@@ -74,7 +76,7 @@
             </span>
         }
     </a>
-    <ul class="dropdown-menu">
+     <ul class="dropdown-menu dropdown-menu-end">
         @foreach (var item in cart.CartLines)
         {
             <li>
@@ -88,6 +90,7 @@
             <a class="btn btn-warning m-auto" href="/Cart">Sepete Git</a>
         </li>
     </ul>
+    </div>
 }
 else
 {
