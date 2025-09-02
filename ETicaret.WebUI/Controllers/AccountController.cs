@@ -4,6 +4,7 @@ using ETicaret.WebUI.Models;
 using Microsoft.AspNetCore.Authentication;//login
 using Microsoft.AspNetCore.Authorization;//login
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;//login
 
 namespace ETicaret.WebUI.Controllers
@@ -20,10 +21,12 @@ namespace ETicaret.WebUI.Controllers
         //}
 
         private readonly IService<AppUser> _service;
+        private readonly IService<Order> _serviceOrder;
 
-        public AccountController(IService<AppUser> service)
+        public AccountController(IService<AppUser> service, IService<Order> serviceOrder)
         {
             _service = service;
+            _serviceOrder = serviceOrder;
         }
 
         [Authorize]//Bu sayfayı sadece giriş yapmış kullanıcılar görebilir!" anlamına gelir.
@@ -87,11 +90,27 @@ namespace ETicaret.WebUI.Controllers
 
 
 
-        public IActionResult SignIn()//giriş
+        [Authorize]
+        public async Task<IActionResult> MyOrders()
+        {
+            AppUser user = await _service.GetAsync(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
+            if (user is null)
+            {
+                await HttpContext.SignOutAsync();
+                return RedirectToAction("SignIn");
+            }
+
+            var model = _serviceOrder.GetQueryable().Where(s => s.AppUserId == user.Id).Include(o=>o.OrderLines)
+                .ThenInclude(p=>p.product);
+            return View(model);
+        }
+
+
+
+        public IActionResult SignIn()
         {
             return View();
         }
-       
 
         [HttpPost]
         public async Task<IActionResult> SignInAsync(LoginViewModel loginViewModel)//giriş
