@@ -63,6 +63,106 @@ namespace ETicaret.WebUI.Controllers
             return View(address);
         }
 
+        public async Task<IActionResult> Edit(string id)
+        {
+            var appUser = await _serviceAppUser.GetAsync(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
+            if (appUser == null)
+            {
+                return NotFound("Kullanıcı Datası Bulunamadı! Oturumunuzu Kapatıp Lütfen Tekrar Giriş Yapınız");
+            }
+            var model = await _serviceAddress.GetAsync(u => u.AdressGuid.ToString() ==id && u.AppUserId==appUser.Id);
+            if(model == null)
+            {
+                return NotFound("Adres Bilgisi Bulunamadı!");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id,Address address)
+        {
+            var appUser = await _serviceAppUser.GetAsync(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
+            if (appUser == null)
+            {
+                return NotFound("Kullanıcı Datası Bulunamadı! Oturumunuzu Kapatıp Lütfen Tekrar Giriş Yapınız");
+            }
+            var model = await _serviceAddress.GetAsync(u => u.AdressGuid.ToString() ==id && u.AppUserId==appUser.Id);
+            if(model == null) 
+                return NotFound("Adres Bilgisi Bulunamadı!");      
+                model.Title = address.Title;
+                model.City = address.City;
+                model.District = address.District;
+                model.OpenAddress = address.OpenAddress;
+                model.IsBillingAddress = address.IsBillingAddress;
+                model.IsDeliveryAddress = address.IsDeliveryAddress;
+                model.IsActive = address.IsActive;
+                var otherAddresses = await _serviceAddress.GetAllAsync(x=>x.AppUserId==appUser.Id && x.Id != model.Id);
+
+                foreach (var otherAddress in otherAddresses)
+                {
+                   otherAddress.IsBillingAddress = false;
+                    otherAddress.IsBillingAddress = false;
+                     _serviceAddress.Update(otherAddress);
+                }
+
+                try
+                    {
+                        _serviceAddress.Update(model);
+                        await _serviceAddress.SaveChangesAsync();
+                        return RedirectToAction("Index");
+                       
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("", "hata oluştu");
+                    }
+            return View(model);
+        }
+
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            var appUser = await _serviceAppUser.GetAsync(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
+            if (appUser == null)
+            {
+                return NotFound("Kullanıcı Datası Bulunamadı! Oturumunuzu Kapatıp Lütfen Tekrar Giriş Yapınız");
+            }
+            var model = await _serviceAddress.GetAsync(u => u.AdressGuid.ToString() == id && u.AppUserId == appUser.Id);
+            if (model == null)
+            {
+                return NotFound("Adres Bilgisi Bulunamadı!");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id,Address address)
+        {
+            var appUser = await _serviceAppUser.GetAsync(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
+            if (appUser == null)
+            {
+                return NotFound("Kullanıcı Datası Bulunamadı! Oturumunuzu Kapatıp Lütfen Tekrar Giriş Yapınız");
+            }
+            var model = await _serviceAddress.GetAsync(u => u.AdressGuid.ToString() == id && u.AppUserId == appUser.Id);
+            if (model == null)
+                return NotFound("Adres Bilgisi Bulunamadı!");
+            try
+            {
+                _serviceAddress.Delete(model);
+                await _serviceAddress.SaveChangesAsync();
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception) 
+            {
+                ModelState.AddModelError("", "hata oluştu");
+            }
+            return View(model);
+        }
+
+
 
 
     }

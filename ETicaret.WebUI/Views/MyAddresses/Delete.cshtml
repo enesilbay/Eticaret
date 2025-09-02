@@ -1,0 +1,67 @@
+﻿@model ETicaret.Core.Entities.Address
+
+@{
+    ViewData["Title"] = "Adres Silme";
+}
+<h3 class="text-danger mb-4">Bu kullanıcıyı silmek istediğinizden emin misiniz?</h3>
+
+<div class="card p-4 mb-4 shadow-sm"> 
+    <div class="row">
+        <dt class="col-sm-3 text-muted"> 
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.City)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.District)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.District)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.OpenAddress)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.OpenAddress)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.IsBillingAddress)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.IsBillingAddress)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.IsDeliveryAddress)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.IsDeliveryAddress)
+        </dd>
+     </div>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger me-2"> @* Buton olarak değiştirildi ve simge eklendi *@
+        <i class="fas fa-trash-alt"></i> Sil
+    </button>
+    <a asp-action="Index" class="btn btn-secondary"> @* Simge eklendi *@
+        <i class="fas fa-arrow-left"></i> Listeye Geri Dön
+    </a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
