@@ -127,6 +127,8 @@ namespace ETicaret.WebUI.Controllers
             var teslimatAdresi = addresses.FirstOrDefault(a => a.AdressGuid.ToString() == Addresses);
             var faturaAdresi = addresses.FirstOrDefault(a => a.AdressGuid.ToString() == BillingAddress);
 
+            //ödeme çekme işlemi
+
 
             return View(model);
         }
