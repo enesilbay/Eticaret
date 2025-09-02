@@ -172,6 +172,11 @@ namespace ETicaret.WebUI.Controllers
             return View(model);
         }
 
+        public IActionResult Thanks()
+        {
+            return View();
+        }
+
 
         private CartService GetCart()
         {
