@@ -106,9 +106,8 @@
 								<div class="card-header">
 									<div class="form-check">
 										<label class="form-check-label">
-											@Html.RadioButtonFor(Model=>Model.Addresses,item.AdressGuid,
-												new{
-													@class="form-check-input",	})
+											<input class="form-check-input" type="radio" name="DeliveryAddress" 
+											value="@item.AdressGuid" @(item.IsDeliveryAddress ? "checked" : "") />
 													@item.Title
 										</label>
 									</div>
@@ -120,7 +119,8 @@
 									</p>
 									<div class="form-check">
 										<label class="form-check-label">
-										<input type="radio" name="BillingAddress" value="@item.AdressGuid"/>
+											<input class="form-check-input" type="radio" name="BillingAddress" 
+											value="@item.AdressGuid" @(item.IsBillingAddress ? "checked" : "") />
 													Fatura Adresi
 										</label>
 									</div>

@@ -14,12 +14,14 @@ namespace ETicaret.WebUI.Controllers
         private readonly IService<Product> _service;
         private readonly IService<Address> _serviceAddress;
         private readonly IService<AppUser> _serviceAppUser;
+        private readonly IService<Order> _serviceOrder;
 
-        public CartController(IService<Product> service, IService<Address> serviceAddress, IService<AppUser> serviceAppUser)
+        public CartController(IService<Product> service, IService<Address> serviceAddress, IService<AppUser> serviceAppUser, IService<Order> serviceOrder)
         {
             _service = service;
             _serviceAddress = serviceAddress;
             _serviceAppUser = serviceAppUser;
+            _serviceOrder = serviceOrder;
         }
         public IActionResult Index()
         {
@@ -103,7 +105,8 @@ namespace ETicaret.WebUI.Controllers
         }
 
         [Authorize,HttpPost]
-        public async Task<IActionResult> CheckOut(string CardNumber,string CardMonth,string CardYear,string CVV,string Addresses, string BillingAddress)
+        public async Task<IActionResult> CheckOut(string CardNumber,string CardMonth,string CardYear,string CVV,
+            string DeliveryAddress, string BillingAddress)
         {
             var cart = GetCart();
             var appUser = await _serviceAppUser.GetAsync(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
@@ -120,15 +123,51 @@ namespace ETicaret.WebUI.Controllers
             };
 
             if (string.IsNullOrWhiteSpace(CardNumber) || string.IsNullOrWhiteSpace(CardYear) || string.IsNullOrWhiteSpace(CardMonth) ||
-                string.IsNullOrWhiteSpace(CVV) || string.IsNullOrWhiteSpace(Addresses) || string.IsNullOrWhiteSpace(BillingAddress))
+                string.IsNullOrWhiteSpace(CVV) || string.IsNullOrWhiteSpace(DeliveryAddress) || string.IsNullOrWhiteSpace(BillingAddress))
             {
                 return View(model);
             }
-            var teslimatAdresi = addresses.FirstOrDefault(a => a.AdressGuid.ToString() == Addresses);
+            var teslimatAdresi = addresses.FirstOrDefault(a => a.AdressGuid.ToString() == DeliveryAddress);
             var faturaAdresi = addresses.FirstOrDefault(a => a.AdressGuid.ToString() == BillingAddress);
 
             //ödeme çekme işlemi
+            var siparis= new Order()
+            {
+                AppUserId=appUser.Id,
+                BillingAddress=BillingAddress,
+                CustomerId=appUser.UserGuid.ToString(),
+                DeliveryAddress = DeliveryAddress,
+                OrderDate=DateTime.Now,
+                TotalPrice=cart.TotalPrice(),
+                OrderNumber=Guid.NewGuid().ToString(),
+                OrderLines = []
+            };
 
+            foreach (var item in cart.CartLines)
+            {
+                siparis.OrderLines.Add(new OrderLine()
+                {
+                    ProductId=item.Product.Id,
+                    Quantity=item.Quantity,
+                    OrderId=siparis.Id,
+                    UnitPrice=item.Product.Price,
+                });
+            }
+            try
+            {
+                await _serviceOrder.AddAsync(siparis);
+                var sonuc = await _serviceOrder.SaveChangesAsync();
+                if (sonuc>0)
+                {
+                    HttpContext.Session.Remove("Cart");
+                    return RedirectToAction("Thanks");
+                }
+            }
+            catch (Exception)
+            {
+
+               TempData["Message"] = "Siparişiniz alınırken bir hata oluştu.Lütfen tekrar deneyiniz.";
+            }
 
             return View(model);
         }
