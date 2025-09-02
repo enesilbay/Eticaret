@@ -102,6 +102,34 @@ namespace ETicaret.WebUI.Controllers
             return View(model);
         }
 
+        [Authorize,HttpPost]
+        public async Task<IActionResult> CheckOut(string CardNumber,string CardMonth,string CardYear,string CVV,string Addresses, string BillingAddress)
+        {
+            var cart = GetCart();
+            var appUser = await _serviceAppUser.GetAsync(x => x.UserGuid.ToString() == HttpContext.User.FindFirst("UserGuid").Value);
+            if (appUser == null)
+            {
+                return RedirectToAction("SıgnIn", "Account");
+            }
+            var addresses = await _serviceAddress.GetAllAsync(a => a.AppUserId == appUser.Id && a.IsActive);
+            var model = new CheckOutViewModel()
+            {
+                CartProducts = cart.CartLines,
+                TotalPrice = cart.TotalPrice(),
+                Addresses = addresses
+            };
+
+            if (string.IsNullOrWhiteSpace(CardNumber) || string.IsNullOrWhiteSpace(CardYear) || string.IsNullOrWhiteSpace(CardMonth) ||
+                string.IsNullOrWhiteSpace(CVV) || string.IsNullOrWhiteSpace(Addresses) || string.IsNullOrWhiteSpace(BillingAddress))
+            {
+                return View(model);
+            }
+            var teslimatAdresi = addresses.FirstOrDefault(a => a.AdressGuid.ToString() == Addresses);
+            var faturaAdresi = addresses.FirstOrDefault(a => a.AdressGuid.ToString() == BillingAddress);
+
+
+            return View(model);
+        }
 
 
         private CartService GetCart()
