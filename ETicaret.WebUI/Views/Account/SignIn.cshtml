@@ -46,7 +46,16 @@
         <input type="hidden" asp-for="ReturnUrl" value="@Context.Request.Query["ReturnUrl"]" />
         <button class="btn btn-primary w-100 py-2" type="submit">Giriş</button>
     </form>
- 
+        <div class="row">
+            <div class="col-12 my-3">
+                <a href="/Account/SignUp" class="btn btn-info w-100 py-2">Kayıt Ol</a>
+            </div>
+            <div class="col-12">
+                <a href="/Account/PasswordRenew" class="btn btn-warning w-100 py-2">Şifremi Unuttum</a>
+            </div>
+        </div>
+
+
 </main>
 <hr/>
  <p class="alert alert-light alert-dismissible fade show">

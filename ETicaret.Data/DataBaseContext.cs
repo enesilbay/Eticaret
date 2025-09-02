@@ -11,6 +11,7 @@ namespace ETicaret.Data
 {
     public class DataBaseContext:DbContext
     {
+        public DbSet<Address> Addresses { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
