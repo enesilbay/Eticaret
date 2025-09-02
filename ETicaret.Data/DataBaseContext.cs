@@ -19,6 +19,8 @@ namespace ETicaret.Data
         public DbSet<News> News { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Slider> Sliders { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderLine> OrderLines { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
