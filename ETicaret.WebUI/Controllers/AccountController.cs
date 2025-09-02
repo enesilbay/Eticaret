@@ -145,7 +145,7 @@ namespace ETicaret.WebUI.Controllers
         {
             appUser.IsAdmin = false;
             appUser.IsActive = true;
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 await _service.AddAsync(appUser);
                 await _service.SaveChangesAsync();

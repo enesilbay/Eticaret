@@ -6,9 +6,10 @@
 <div class="text-center">
     <h1 class="display-4">Satın AL</h1>
 </div>
-<div class="row">
+
 	@if (Model.CartProducts.Any())
 						{
+							<div class="row">
 	<div class="col-md-8">
 		<div class="table-responsive">
 			
@@ -78,7 +79,63 @@
 			</tr>
 		</table>
 	</div>
-	}
+	</div>
+
+		<hr />
+		if(Model.Addresses is null)
+		{
+			<div class="alert alert-secondary my-5">
+				<h5 class="text-danger">Kayıtlı Adresiniz yok</h5>
+				<h6>Sipariş verebilmek için en az 1 adres eklemelisiniz</h6>
+				<a href="/MyAddresses/Create"class="btn btn-danger">
+					<i class="bi-person-plus me-1"></i>
+					Adres Ekle
+					</a>	
+			</div>
+		}
+			else
+		{
+			<form asp-action="Checkout">
+				<div class="my-5">
+					<h3>Teslimat Adresi</h3>
+					<div class="row row-cols-3">
+						@foreach (var item in Model.Addresses)
+					{
+						<div class="col">
+							<div class="card">
+								<div class="card-header">
+									<div class="form-check">
+										<label class="form-check-label">
+											@Html.RadioButtonFor(Model=>Model.Addresses,item.AdressGuid,
+												new{
+													@class="form-check-input",	})
+													@item.Title
+										</label>
+									</div>
+								</div>
+
+								<div class="card-body">
+									<p>
+										@item.OpenAddress @item.District  @item.City
+									</p>
+									<div class="form-check">
+										<label class="form-check-label">
+										<input type="radio" name="BillingAddress" value="@item.AdressGuid"/>
+													Fatura Adresi
+										</label>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					}
+					</div>
+				</div>
+			</form>
+		}
+
+				}		
 				else
 				{
 									<div class="container ">
@@ -87,5 +144,5 @@
 					</div>
 				</div>
 				}
-</div>
+
 </section>
