@@ -1,11 +1,11 @@
-﻿@model IEnumerable<News>
+﻿@model IEnumerable<Order>
 
 @{
-    ViewData["Title"] = "Kampanya Ve Duyurular";
+    ViewData["Title"] = "Siparişler";
 }
 <p>
    <a asp-action="Create" class="btn btn-primary">
-        <i class="fas fa-user-plus"></i> Yeni Duyuru Ekle
+        <i class="fas fa-user-plus"></i> Yeni Ekle
     </a>
 </p>
 <div class="table-responsive"> 
@@ -13,16 +13,16 @@
 <thead class="table-dark">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.OrderNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
+                @Html.DisplayNameFor(model => model.TotalPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image)
+                @Html.DisplayNameFor(model => model.AppUserId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsActive)
+                @Html.DisplayNameFor(model => model.OrderDate)
             </th>
             <th></th>
         </tr>
@@ -31,19 +31,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.OrderNumber)
             </td>
             <td>
-                @item.CreateDate.ToShortDateString()
+                @Html.DisplayFor(modelItem => item.TotalPrice)
             </td>
             <td>
-                <img src="/Img/News/@item.Image" height="75" />
+                @Html.DisplayFor(modelItem => item.AppUserId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
+                @Html.DisplayFor(modelItem => item.OrderDate)
             </td>
-           <td class="text-center text-nowrap"> 
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm me-1" title="Düzenle">
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm me-1" title="Düzenle">
                             <i class="fas fa-edit"></i>
                         </a>
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm me-1" title="Detaylar">
@@ -52,13 +52,8 @@
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" title="Sil">
                             <i class="fas fa-trash-alt"></i>
                         </a>
-                    </td>
+            </td>
         </tr>
 }
     </tbody>
 </table>
-</div>
-
-                        @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

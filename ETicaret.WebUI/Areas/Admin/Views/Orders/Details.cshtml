@@ -1,0 +1,57 @@
+﻿@model ETicaret.Core.Entities.Order
+
+@{
+    ViewData["Title"] = "Detaylar";
+}
+<div class="card p-4 mb-4 shadow-sm">
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3 text-muted">
+            @Html.DisplayNameFor(model => model.OrderNumber)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.OrderNumber)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.AppUserId)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.AppUserId)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.CustomerId)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.CustomerId)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.BillingAddress)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.BillingAddress)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.DeliveryAddress)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.DeliveryAddress)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+    </dl>
+</div>
+<div>
+   <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning me-2"> 
+        <i class="fas fa-edit"></i> Düzenle
+    </a>
+</div>

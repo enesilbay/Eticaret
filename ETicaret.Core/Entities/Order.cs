@@ -20,5 +20,7 @@ namespace ETicaret.Core.Entities
         [Display(Name = "Sipariş Tarihi")]
         public DateTime OrderDate { get; set; }
         public List<OrderLine>? OrderLines { get; set; }
+
+        //Bir Order (Sipariş), birden çok OrderLine (Sipariş Kalemi) içerebilir.
     }
 }

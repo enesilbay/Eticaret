@@ -97,12 +97,14 @@ namespace ETicaret.WebUI.Controllers
                 model.IsBillingAddress = address.IsBillingAddress;
                 model.IsDeliveryAddress = address.IsDeliveryAddress;
                 model.IsActive = address.IsActive;
-                var otherAddresses = await _serviceAddress.GetAllAsync(x=>x.AppUserId==appUser.Id && x.Id != model.Id);
+            //Kullanıcının düzenlediği adres dışındaki bütün diğer adreslerini veritabanından çeker.
+            var otherAddresses = await _serviceAddress.GetAllAsync(x=>x.AppUserId==appUser.Id && x.Id != model.Id);
 
-                foreach (var otherAddress in otherAddresses)
+            //Varsayılan Adres Mantığı
+            foreach (var otherAddress in otherAddresses)
                 {
                    otherAddress.IsBillingAddress = false;
-                    otherAddress.IsBillingAddress = false;
+                    otherAddress.IsDeliveryAddress = false;
                      _serviceAddress.Update(otherAddress);
                 }
 

@@ -3,41 +3,62 @@
 @{
     ViewData["Title"] = "Siparişlerim";
 }
-<h1>Siparişlerim</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDate)
-            </th>
-            <th>
-                Sipariş Özeti
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice) TL
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
-            <td>
-                @item.OrderLines.Count() ürün
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<h1 class="mb-4">Siparişlerim</h1>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <span><strong>Sipariş No:</strong> @item.Id</span>
+                    <span>@item.OrderDate.ToString("dd.MM.yyyy HH:mm")</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>Sipariş Toplamı:</strong> @item.TotalPrice.ToString("c")</p>
+                    <p><strong>Ürün Sayısı:</strong> @item.OrderLines.Count()</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Görsel</th>
+                                    <th>Ürün</th>
+                                    <th>Fiyat</th>
+                                    <th>Miktar</th>
+                                    <th>Toplam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item2 in item.OrderLines)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="/Img/Product/@item2.product.Image" 
+                                                 alt="@item2.product.Name" 
+                                                 class="img-thumbnail" style="height:50px;" />
+                                        </td>
+                                        <td>
+                                            <a href="/Products/Details/@item2.product.Id" class="text-decoration-none fw-bold">
+                                                @item2.product.Name
+                                            </a>
+                                        </td>
+                                        <td>@item2.UnitPrice.ToString("c")</td>
+                                        <td>@item2.Quantity</td>
+                                        <td>@((item2.Quantity * item2.UnitPrice).ToString("c"))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer text-end bg-light">
+                    <a href="/Orders/Details/@item.Id" class="btn btn-sm btn-outline-secondary">
+                        Detayları Gör
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
