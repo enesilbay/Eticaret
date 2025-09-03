@@ -140,6 +140,7 @@ namespace ETicaret.WebUI.Controllers
                 OrderDate=DateTime.Now,
                 TotalPrice=cart.TotalPrice(),
                 OrderNumber=Guid.NewGuid().ToString(),
+                OrderState=0,
                 OrderLines = []
             };
 

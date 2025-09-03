@@ -1,7 +1,23 @@
-﻿@model IEnumerable<Order>
+﻿@model IEnumerable<ETicaret.Core.Entities.Order>
+@using ETicaret.Core.Entities; 
 
 @{
     ViewData["Title"] = "Siparişlerim";
+
+    // Sipariş durumuna göre Bootstrap etiket (badge) rengini belirleyen yardımcı fonksiyon
+    string GetBadgeClass(EnumOrderState state)
+    {
+        return state switch
+        {
+            EnumOrderState.Completed => "badge bg-success",
+            EnumOrderState.Shipped => "badge bg-primary",
+            EnumOrderState.Approved => "badge bg-info text-dark",
+            EnumOrderState.Waiting => "badge bg-warning text-dark",
+            EnumOrderState.Cancelled => "badge bg-danger",
+            EnumOrderState.Returned => "badge bg-secondary",
+            _ => "badge bg-light text-dark" // Tanımsız durumlar için varsayılan
+        };
+    }
 }
 
 <h1 class="mb-4">Siparişlerim</h1>
@@ -18,6 +34,14 @@
                 <div class="card-body">
                     <p><strong>Sipariş Toplamı:</strong> @item.TotalPrice.ToString("c")</p>
                     <p><strong>Ürün Sayısı:</strong> @item.OrderLines.Count()</p>
+                    
+                    <!-- Sipariş Durumu Eklendi -->
+                    <p>
+                        <strong>Sipariş Durumu:</strong> 
+                        <span class="@GetBadgeClass(item.OrderState)">
+                            @Html.DisplayFor(modelItem => item.OrderState)
+                        </span>
+                    </p>
 
                     <div class="table-responsive">
                         <table class="table table-sm align-middle">
@@ -35,8 +59,8 @@
                                 {
                                     <tr>
                                         <td>
-                                            <img src="/Img/Product/@item2.product.Image" 
-                                                 alt="@item2.product.Name" 
+                                            <img src="/Img/Product/@item2.product.Image"
+                                                 alt="@item2.product.Name"
                                                  class="img-thumbnail" style="height:50px;" />
                                         </td>
                                         <td>
@@ -62,3 +86,4 @@
         </div>
     }
 </div>
+
