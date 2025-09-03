@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Admin Paneli</title>
+    <title>@ViewData["Title"] - Admin Paneli
+    </title>
+       
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ETicaret.WebUI.styles.css" asp-append-version="true" />
@@ -57,7 +59,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="/Admin/Orders">
-                                <i class="fa-solid fa-layer-group"></i>Siparişler</a>
+                                <i class="fa-solid fa-cart-shopping"></i>Siparişler</a>
                         </li>
 
                        @*  <a class="nav-link" href="/Admin/AppUsers">
@@ -69,7 +71,7 @@
                     <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa-solid fa-user-circle"></i> Admin
+                <i class="fa-solid fa-user-circle"></i>   @Context.User.Identity.Name
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#!">Ayarlar</a></li>

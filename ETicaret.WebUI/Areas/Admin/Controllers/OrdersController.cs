@@ -19,7 +19,7 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
         // GET: Admin/Orders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            return View(await _context.Orders.Include(u=>u.AppUser).ToListAsync());
         }
 
         // GET: Admin/Orders/Details/5
@@ -30,7 +30,7 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
+            var order = await _context.Orders.Include(u=>u.AppUser).Include(o => o.OrderLines).ThenInclude(p=>p.product)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
@@ -46,12 +46,8 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
             return View();
         }
 
-        // POST: Admin/Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderNumber,TotalPrice,AppUserId,CustomerId,BillingAddress,DeliveryAddress,OrderDate")] Order order)
+        public async Task<IActionResult> Create( Order order)
         {
             if (ModelState.IsValid)
             {
@@ -78,9 +74,6 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
             return View(order);
         }
 
-        // POST: Admin/Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,OrderNumber,TotalPrice,AppUserId,CustomerId,BillingAddress,DeliveryAddress,OrderDate")] Order order)

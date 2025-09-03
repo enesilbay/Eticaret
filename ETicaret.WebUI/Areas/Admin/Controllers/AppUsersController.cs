@@ -55,14 +55,13 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
         // POST: Admin/AppUsers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Email,Phone,Password,UserName,IsActive,IsAdmin")] AppUser appUser)
+        public async Task<IActionResult> Create( AppUser appUser)
         {
-            if (ModelState.IsValid)
-            {
+          
                 _context.Add(appUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            
             return View(appUser);
         }
 

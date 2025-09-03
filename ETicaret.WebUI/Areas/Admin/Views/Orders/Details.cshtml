@@ -16,7 +16,7 @@
             @Html.DisplayNameFor(model => model.TotalPrice)
         </dt>
         <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.TotalPrice)
+            @Html.DisplayFor(model => model.TotalPrice) ₺
         </dd>
         <dt class = "col-sm-3">
             @Html.DisplayNameFor(model => model.AppUserId)
@@ -25,10 +25,11 @@
             @Html.DisplayFor(model => model.AppUserId)
         </dd>
         <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.CustomerId)
+            @Html.DisplayNameFor(model => model.AppUser)
         </dt>
         <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.CustomerId)
+            @Html.DisplayFor(model => model.AppUser.Name)
+            @Html.DisplayFor(model => model.AppUser.Surname)
         </dd>
         <dt class = "col-sm-3">
             @Html.DisplayNameFor(model => model.BillingAddress)
@@ -49,6 +50,40 @@
             @Html.DisplayFor(model => model.OrderDate)
         </dd>
     </dl>
+    @if (Model.OrderLines.Any())
+    {
+         <table class="table table-sm align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Görsel</th>
+                                    <th>Ürün</th>
+                                    <th>Fiyat</th>
+                                    <th>Miktar</th>
+                                    <th>Toplam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item2 in Model.OrderLines)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="/Img/Product/@item2.product.Image" 
+                                                 alt="@item2.product.Name" 
+                                                 class="img-thumbnail" style="height:50px;" />
+                                        </td>
+                                        <td>
+                                            <a href="/Products/Details/@item2.product.Id" class="text-decoration-none fw-bold">
+                                                @item2.product.Name
+                                            </a>
+                                        </td>
+                                        <td>@item2.UnitPrice.ToString("c")</td>
+                                        <td>@item2.Quantity</td>
+                                        <td>@((item2.Quantity * item2.UnitPrice).ToString("c"))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+    }
 </div>
 <div>
    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning me-2"> 
