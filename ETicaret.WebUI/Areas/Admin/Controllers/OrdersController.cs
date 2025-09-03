@@ -2,6 +2,7 @@
 using ETicaret.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ETicaret.WebUI.Areas.Admin.Controllers
@@ -47,6 +48,7 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
         }
 
         [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> Create( Order order)
         {
             if (ModelState.IsValid)
@@ -66,17 +68,19 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.Include(u => u.AppUser).Include(o => o.OrderLines).ThenInclude(p => p.product)
+               .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
                 return NotFound();
             }
+            ViewBag.OrderStates = new SelectList(Enum.GetValues(typeof(EnumOrderState)));
             return View(order);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderNumber,TotalPrice,AppUserId,CustomerId,BillingAddress,DeliveryAddress,OrderDate")] Order order)
+        public async Task<IActionResult> Edit(int id, Order order)
         {
             if (id != order.Id)
             {
@@ -98,11 +102,12 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
                     }
                     else
                     {
-                        throw;
+                        ModelState.AddModelError("","Hata Oluştu");
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.OrderStates = new SelectList(Enum.GetValues(typeof(EnumOrderState)));
             return View(order);
         }
 
@@ -114,7 +119,7 @@ namespace ETicaret.WebUI.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
+            var order = await _context.Orders.Include(u=>u.AppUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
