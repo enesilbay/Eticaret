@@ -7,13 +7,16 @@
     @anaKategori.Name
   </a>
 
-  <ul class="dropdown-menu">
+  @if (Model.Where(c=>c.ParentId==anaKategori.Id) is not null && Model.Where(c=>c.ParentId==anaKategori.Id).Count() > 0)
+				{
+				<ul class="dropdown-menu">
 				@foreach (var altKategori in Model.Where(c=>c.ParentId==anaKategori.Id))
 				{
-					<li><a class="dropdown-item" href="/Categories/Index/@altKategori.Id">@altKategori.Name</a></li>
+				<li><a class="dropdown-item" href="/Categories/Index/@altKategori.Id">@altKategori.Name</a></li>
 				} 
-  </ul>
-</div>
+				</ul>
+				}
+		</div>
 	}
 }
 @*Razor (@): HTML kodunun içine C# kodu yazmamızı sağlayan bir "sözdizimidir" (syntax).
