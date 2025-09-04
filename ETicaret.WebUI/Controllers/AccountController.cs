@@ -1,6 +1,7 @@
 ﻿using ETicaret.Core.Entities;
 using ETicaret.Service.Abstract;
 using ETicaret.WebUI.Models;
+using ETicaret.WebUI.Utils;
 using Microsoft.AspNetCore.Authentication;//login
 using Microsoft.AspNetCore.Authorization;//login
 using Microsoft.AspNetCore.Mvc;
@@ -177,6 +178,30 @@ namespace ETicaret.WebUI.Controllers
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("SignIn");
+        }
+
+        public IActionResult PasswordRenew()//Şifremi unuttum
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> PasswordRenewAsync(string Email)//Şifremi unuttum
+        {
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                ModelState.AddModelError("", "Email Boş Olamaz");
+                return View();
+            }
+            AppUser user = await _service.GetAsync(x => x.Email == Email);
+            if (user is null)
+            {
+                ModelState.AddModelError("", "Geçersiz Email");
+                return View();
+            }
+            string mesaj = $" Şifrenizi Yenilemek için lütfen linke tıklayınız :" +
+                $" <a href='https://localhost:7194/Account/PasswordRenew?{user.UserGuid.ToString()}'>Buraya Tıklayınız<a/>";
+           // MailHelper.SendMailAsync(Email,"Şifremi Yenile",mesaj);
+            return View();
         }
     }
 }
