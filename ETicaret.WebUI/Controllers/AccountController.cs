@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;//login
 using Microsoft.AspNetCore.Authorization;//login
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Security.Claims;//login
 
 namespace ETicaret.WebUI.Controllers
@@ -180,10 +181,13 @@ namespace ETicaret.WebUI.Controllers
             return RedirectToAction("SignIn");
         }
 
+       
+
         public IActionResult PasswordRenew()//Şifremi unuttum
         {
             return View();
         }
+        
         [HttpPost]
         public async Task<IActionResult> PasswordRenewAsync(string Email)//Şifremi unuttum
         {
@@ -198,10 +202,73 @@ namespace ETicaret.WebUI.Controllers
                 ModelState.AddModelError("", "Geçersiz Email");
                 return View();
             }
-            string mesaj = $" Şifrenizi Yenilemek için lütfen linke tıklayınız :" +
-                $" <a href='https://localhost:7194/Account/PasswordRenew?{user.UserGuid.ToString()}'>Buraya Tıklayınız<a/>";
-           // MailHelper.SendMailAsync(Email,"Şifremi Yenile",mesaj);
+            string mesaj = $"Sayın {user.Name} {user.Surname} <br>" +
+                $" Şifrenizi Yenilemek için lütfen" +
+                $" <a href='https://localhost:7194/Account/PasswordChange?{user.UserGuid.ToString()}'> " +
+                $"Buraya Tıklayınız<a/>"; 
+            var sonuc= await MailHelper.SendMailAsync(Email, "Şifremi Yenile", mesaj);
+            if (sonuc)
+            {
+                TempData["Message"] = @"<div class=""alert alert-success alert-dismissible fade show"" role=""alert"">
+                         <strong>Şifre yenileme maili gönderilmiştir!</strong>
+                            <button type=""button"" class=""btn-close"" data-bs-dismiss=""alert"" aria-label=""Close""></button>
+                                </div>";
+            }
+            else
+            {
+                TempData["Message"] = @"<div class=""alert alert-danger alert-dismissible fade show"" role=""alert"">
+                         <strong>Şifre yenileme maili gönderilememiştir!</strong>
+                            <button type=""button"" class=""btn-close"" data-bs-dismiss=""alert"" aria-label=""Close""></button>
+                                </div>";
+            }
             return View();
         }
+
+
+        public async Task<IActionResult> PasswordChangeAsync(string user)
+        {
+            if (user is null)
+            {
+                return BadRequest("Geçersiz İstek");
+            }
+            AppUser appUser = await _service.GetAsync(x=>x.UserGuid.ToString()==user);
+            if (appUser is null)
+            {
+                return NotFound("Geçersiz Değer");
+            }
+            return View();
+        }
+
+        [HttpPost] 
+        public async Task<IActionResult> PasswordChange(string user,string Password)
+        {
+            if (user is null)
+            {
+                return BadRequest("Geçersiz İstek");
+            }
+            AppUser appUser = await _service.GetAsync(x=>x.UserGuid.ToString()==user);
+            if (appUser is null)
+            {
+                ModelState.AddModelError("", "Geçersiz Değer");
+                return View();
+            }
+            appUser.Password = Password;
+         var sonuc = await _service.SaveChangesAsync();
+            if (sonuc>0)
+            {
+                TempData["Message"] = @"<div class=""alert alert-danger alert-dismissible fade show"" role=""alert"">
+                         <strong>Şifreniz Güncellenmiştir Giriş Ekranından otutum açabilirsiniz</strong>
+                            <button type=""button"" class=""btn-close"" data-bs-dismiss=""alert"" aria-label=""Close""></button>
+                                </div>";
+            }
+            else
+            {
+                ModelState.AddModelError("", "Güncelleme Başarısız");
+                return View();
+            }   
+
+            return View();
+        }
+
     }
 }
