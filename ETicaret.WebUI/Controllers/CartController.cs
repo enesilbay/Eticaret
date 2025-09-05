@@ -243,8 +243,23 @@ namespace ETicaret.WebUI.Controllers
                     Name = item.Product.Name,
                     Category1 = "Collectibles",
                     ItemType = BasketItemType.PHYSICAL.ToString(),
-                    Price = (item.Product.Price).ToString().Replace(",",".")
+                    Price = (item.Product.Price*item.Quantity).ToString().Replace(",",".")
                 });
+            }
+
+            if (siparis.TotalPrice<9999)
+            {
+                basketItems.Add(new BasketItem
+                {
+                    Id = "Kargo",
+                    Name = "Kargo Ücreti",
+                    Category1 = "Kargo Ücreti",
+                    ItemType = BasketItemType.VIRTUAL.ToString(),
+                    Price = "99"
+                }); 
+                siparis.TotalPrice += 99;
+                request.Price = siparis.TotalPrice.ToString().Replace(",", ".");
+                request.PaidPrice = siparis.TotalPrice.ToString().Replace(",", ".");
             }
 
 
@@ -269,8 +284,8 @@ namespace ETicaret.WebUI.Controllers
                 }
                 else
                 {
-                    TempData["Message"] = "<div class='alert alert-danger'>" +
-                        "Ödeme işlemi gerçekleştirilemedi.Lütfen kart bilgilerinizi kontrol ediniz.</div>";
+                    TempData["Message"] = $"<div class='alert alert-danger'> Ödeme işlemi gerçekleştirilemedi." +
+                        $"Lütfen kart bilgilerinizi kontrol ediniz.</div> ({payment.ErrorMessage})";
                 }
                 
             }
