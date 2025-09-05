@@ -18,13 +18,15 @@ namespace ETicaret.WebUI.Controllers
         private readonly IService<Core.Entities.Address> _serviceAddress;
         private readonly IService<AppUser> _serviceAppUser;
         private readonly IService<Order> _serviceOrder;
+        private readonly IConfiguration _configuration;
 
-        public CartController(IService<Product> service, IService<Core.Entities.Address> serviceAddress, IService<AppUser> serviceAppUser, IService<Order> serviceOrder)
+        public CartController(IService<Product> service, IService<Core.Entities.Address> serviceAddress, IService<AppUser> serviceAppUser, IService<Order> serviceOrder, IConfiguration configuration)
         {
             _service = service;
             _serviceAddress = serviceAddress;
             _serviceAppUser = serviceAppUser;
             _serviceOrder = serviceOrder;
+            _configuration = configuration;
         }
         public IActionResult Index()
         {
@@ -167,9 +169,9 @@ namespace ETicaret.WebUI.Controllers
             }
             #region OdemeIslemi
             Options options = new Options();
-            options.ApiKey = "your api key";
-            options.SecretKey = "your secret key";
-            options.BaseUrl = "https://sandbox-api.iyzipay.com";
+            options.ApiKey = _configuration["IyzicOptions:ApiKey"];
+            options.SecretKey = _configuration["IyzicOptions:SecretKey"];
+            options.BaseUrl = _configuration["IyzicOptions:BaseUrl"];  //"https://sandbox-api.iyzipay.com";
 
             CreatePaymentRequest request = new CreatePaymentRequest();
             request.Locale = Locale.TR.ToString();
