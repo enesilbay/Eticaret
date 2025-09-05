@@ -41,20 +41,7 @@ footer {
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
-/* Slider yüksekliðini sabit tut ve taþan kýsmý kýrp */
-.slider-img {
-    height: 400px;
-    object-fit: cover;
-}
 
-/* Carousel ile altýndaki ürünler arasýnda boþluk býrakma */
-#carouselExampleCaptions {
-    margin-bottom: 20px; /* istersen 0 yapabilirsin */
-}
 
-/* Mobil cihazlarda daha küçük göster */
-@media (max-width: 768px) {
-    .slider-img {
-        height: 250px;
-    }
-}
+
+
