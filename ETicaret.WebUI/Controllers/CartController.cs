@@ -255,17 +255,27 @@ namespace ETicaret.WebUI.Controllers
             request.BasketItems = basketItems;
 
             Payment payment =await Payment.Create(request, options);
+     
             #endregion
 
             try
             {
-                await _serviceOrder.AddAsync(siparis);
-                var sonuc = await _serviceOrder.SaveChangesAsync();
-                if (sonuc>0)
+                if (payment.Status == "success")
                 {
-                    HttpContext.Session.Remove("Cart");
-                    return RedirectToAction("Thanks");
+                    //sipariş oluştur
+                    await _serviceOrder.AddAsync(siparis);
+                    var sonuc = await _serviceOrder.SaveChangesAsync();
+                    if (sonuc > 0)
+                    {
+                        HttpContext.Session.Remove("Cart");
+                        return RedirectToAction("Thanks");
+                    }
                 }
+                else
+                {
+                    TempData["Message"] = "Ödeme işlemi gerçekleştirilemedi.Lütfen kart bilgilerinizi kontrol ediniz.";
+                }
+                
             }
             catch (Exception)
             {
