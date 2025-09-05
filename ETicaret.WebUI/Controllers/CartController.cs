@@ -118,7 +118,7 @@ namespace ETicaret.WebUI.Controllers
 
 
         [Authorize,HttpPost]
-        public async Task<IActionResult> CheckOut(string CardNumber,string CardMonth,string CardYear,string CVV,
+        public async Task<IActionResult> CheckOut(string CardNameSurname, string CardNumber,string CardMonth,string CardYear,string CVV,
             string DeliveryAddress, string BillingAddress)
         {
             var cart = GetCart();
@@ -175,21 +175,21 @@ namespace ETicaret.WebUI.Controllers
 
             CreatePaymentRequest request = new CreatePaymentRequest();
             request.Locale = Locale.TR.ToString();
-            request.ConversationId = "123456789";
-            request.Price = "1";
-            request.PaidPrice = "1.2";
+            request.ConversationId = HttpContext.Session.Id;
+            request.Price = siparis.TotalPrice.ToString();
+            request.PaidPrice = siparis.TotalPrice.ToString();
             request.Currency = Currency.TRY.ToString();
             request.Installment = 1;
-            request.BasketId = "B67832";
+            request.BasketId = "B"+ HttpContext.Session.Id;
             request.PaymentChannel = PaymentChannel.WEB.ToString();
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
 
             PaymentCard paymentCard = new PaymentCard();
-            paymentCard.CardHolderName = "John Doe";
-            paymentCard.CardNumber = "5528790000000008";
-            paymentCard.ExpireMonth = "12";
-            paymentCard.ExpireYear = "2030";
-            paymentCard.Cvc = "123";
+            paymentCard.CardHolderName = CardNameSurname; //"John Doe";
+            paymentCard.CardNumber = CardNumber; //"5528790000000008";
+            paymentCard.ExpireMonth = CardMonth; //"12";
+            paymentCard.ExpireYear = CardYear; //"2030";
+            paymentCard.Cvc = CVV; //"123";
             paymentCard.RegisterCard = 0;
             request.PaymentCard = paymentCard;
 
