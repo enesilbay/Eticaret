@@ -194,34 +194,34 @@ namespace ETicaret.WebUI.Controllers
             request.PaymentCard = paymentCard;
 
             Buyer buyer = new Buyer();
-            buyer.Id = "BY789";
-            buyer.Name = "John";
-            buyer.Surname = "Doe";
-            buyer.GsmNumber = "+905350000000";
-            buyer.Email = "email@email.com";
-            buyer.IdentityNumber = "74300864791";
-            buyer.LastLoginDate = "2015-10-05 12:43:35";
-            buyer.RegistrationDate = "2013-04-21 15:12:09";
-            buyer.RegistrationAddress = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
-            buyer.Ip = "85.34.78.112";
-            buyer.City = "Istanbul";
+            buyer.Id = "BY"+appUser.Id;
+            buyer.Name = appUser.Name;
+            buyer.Surname = appUser.Surname;
+            buyer.GsmNumber = appUser.Phone;
+            buyer.Email = appUser.Email;
+            buyer.IdentityNumber = "11111111111";
+            buyer.LastLoginDate = DateTime.Now.ToString(); //"2015-10-05 12:43:35";
+            buyer.RegistrationDate = appUser.CreateDate.ToString(); //"2013-04-21 15:12:09";
+            buyer.RegistrationAddress = siparis.DeliveryAddress; //"Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
+            buyer.Ip = HttpContext.Connection.RemoteIpAddress?.ToString(); //"85.34.78.112";
+            buyer.City = teslimatAdresi.City; //"Istanbul";
             buyer.Country = "Turkey";
             buyer.ZipCode = "34732";
             request.Buyer = buyer;
 
             var shippingAddress = new Iyzipay.Model.Address();
-            shippingAddress.ContactName = "Jane Doe";
-            shippingAddress.City = "Istanbul";
+            shippingAddress.ContactName = appUser.Name+" "+appUser.Surname ;
+            shippingAddress.City = teslimatAdresi.City;
             shippingAddress.Country = "Turkey";
-            shippingAddress.Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
+            shippingAddress.Description = teslimatAdresi.OpenAddress; //"Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
             shippingAddress.ZipCode = "34742";
             request.ShippingAddress = shippingAddress;
 
             var billingAddress = new Iyzipay.Model.Address();
-            billingAddress.ContactName = "Jane Doe";
-            billingAddress.City = "Istanbul";
+            billingAddress.ContactName = appUser.Name + " " + appUser.Surname;
+            billingAddress.City = faturaAdresi.City;
             billingAddress.Country = "Turkey";
-            billingAddress.Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
+            billingAddress.Description = faturaAdresi.OpenAddress;
             billingAddress.ZipCode = "34742";
             request.BillingAddress = billingAddress;
 
